@@ -2,45 +2,73 @@
 {{ define "header"}} {{ partial "header" .}} {{end}}
 {{ define "main"}}
 <main>
-    <section class="p-strip--accent">
-        <div class="row">
-            <img src="{{.Params.photo | relURL}}" alt="" style="max-height: 150px; margin-bottom: 10px;"/>
-            <b>{{ i18n "sponsors" }}</b>
-            <h2>{{.Title}}</h2>
-            <div>
-              <div class="p-label--new">{{.Params.group}}</div>
-            </div>
+  <section class="p-strip--accent" {{with .Params.cover}}
+    style="background: linear-gradient( rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4) ), url({{.}}) center / cover;" {{end}}>
+    <div class="row">
+      <img src="{{.Params.photo}}" alt="" style="max-height: 150px; margin-bottom: 10px;" />
+     
+      <h2>{{.Title}}</h2>
+      <div>
+        <div class="p-label--new">
+          {{if eq .Params.group "diamond"}}
+          {{ i18n "diamond_sp" }}
+          {{ else if eq .Params.group "gold"}}
+          {{ i18n "gold_sp" }}
+          {{ else if eq .Params.group "silver"}}
+          {{ i18n "silver_sp" }}
+          {{ else if eq .Params.group "bronze"}}
+          {{ i18n "bronze_sp" }}
+          {{ else if eq .Params.group "supporter"}}
+          {{ i18n "supporter_sp" }}
+          {{ else if eq .Params.group "infra"}}
+          {{ i18n "infra_sp" }}
+          {{ else if eq .Params.group "record"}}
+          {{ i18n "record_sp" }}
+          {{ else if eq .Params.group "videoi18n"}}
+          {{ i18n "videoi18n_sp" }}
+          {{ else if eq .Params.group "swag"}}
+          {{ i18n "swag_sp" }}
+          {{else}}
+          {{ i18n "partner_cm" }}
+          {{end}}
+          </b>
         </div>
-      </section>
-      <section class="p-strip">
-        <div class="row">
-          {{ .Content }}
-          <hr/>
-          {{ range .Params.speakers }}
-          <div class="p-media-object">
-            {{with .profile}}
-              <img src="{{ . | relURL }}" class="p-media-object__image is-round" alt="">
-            {{ else }}
-              <img src='{{ "/images/ubuntu.png" | relURL }}' class="p-media-object__image is-round" alt="">
-            {{end}}
-            <div class="p-media-object__details">
-              <a href="mailto:{{.email}}">
-                <h3 class="p-media-object__title">
-                  {{.name}}
-                </h3>
-              </a>
-              <p class="p-media-object__content">{{.bio}}</p>
-              <p class="p-media-object__content">
-                {{with .launchpad}}<a href="https://launchpad.net/~{{.}}">Launchpad</a>{{end}}
-                {{with .github}}<a href="https://github.com/{{.}}">GitHub</a>{{end}}
-                <a href="{{.linkurl}}"> {{.linklabel}}</a>
-              </p>
-            </div>
-          </div>
-          {{ end }}
-          <a href='{{ ref . "/sponsors/" }}'><button>{{ i18n "more_sponsors" }}</button></a>
-        </div>
-      </section>
+      </div>
+      {{with .Params.region}}
+      <ul class="p-media-object__meta-list">
+        <li class="p-media-object__meta-list-item--location" style="color: white;">
+          <span class="u-off-screen"></span>{{.}}
+        </li>
+      </ul>
+      {{end}}
+      <ul class="p-inline-list--middot">
+        {{with .Params.website}}<li class="p-inline-list__item"><a href="{{.}}">Web</a></li>{{end}}
+        {{with .Params.github}}<li class="p-inline-list__item"><a href="{{.}}">GitHub</a></li>{{end}}
+        {{with .Params.facebook}}<li class="p-inline-list__item"><a href="{{.}}">Facebook</a></li>{{end}}
+        {{with .Params.fbgroup}}<li class="p-inline-list__item"><a href="{{.}}">Facebook Group</a></li>{{end}}
+        {{with .Params.twitter}}<li class="p-inline-list__item"><a href="{{.}}">Twitter</a></li>{{end}}
+        {{with .Params.youtube}}<li class="p-inline-list__item"><a href="{{.}}">YouTube</a></li>{{end}}
+      </ul>
+    </div>
+  </section>
+  <section class="p-strip">
+    <div class="row">
+      {{ .Content }}
+      {{with .Params.brochure}}
+      <div>
+        <object data='{{.}}' type="application/pdf" width="100%" height="700">
+
+          <iframe src='{{.}}' width="500" height="678">
+            <p>This browser does not support PDF!</p>
+          </iframe>
+
+        </object>
+      </div>
+      {{end}}
+      <hr />
+      <a href='{{ ref . "/sponsors/" }}'><button>{{ i18n "more_sponsors" }}</button></a>
+    </div>
+  </section>
 </main>
 
 {{end}}
